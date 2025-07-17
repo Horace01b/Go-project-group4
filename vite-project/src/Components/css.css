@@ -1,0 +1,33 @@
+/* Styles to render the go board */
+.go-board-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+    background-color: #f2e6d9;
+    box-sizing: border-box;
+}
+.go-board {
+    width: 80vw;
+    max-width: 800px;
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #deb887;
+    border: 2px solid black;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    box-sizing: border-box;
+}
+.board-row {
+    display: flex;
+    flex: 1;
+}
+.intersection {
+    flex: 1;
+    border: 1px solid black;
+    box-sizing: border-box;
+    position: relative;
+    cursor: pointer;
+}
