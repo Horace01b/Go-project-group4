@@ -1,57 +1,68 @@
-/* Styles to render the go board */
-.go-board-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    padding: 20px;
-    background-color: #f2e6d9;
-    box-sizing: border-box;
+	.go-board-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f2e6d9;
+  height: 100vh;
+  justify-content: center;
 }
+
 .go-board {
-    width: 80vw;
-    max-width: 800px;
-    aspect-ratio: 1;
-    display: flex;
-    flex-direction: column;
-    background-color: #deb887;
-    border: 2px solid black;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    padding: 10px;
-    box-sizing: border-box;
+  position: relative;
+  width: 90vmin;
+  height: 90vmin;
+  background-color: #deb887;
+  border: 2px solid black;
+
+  background-image:
+    linear-gradient(to right, black 1px, transparent 1px),
+    linear-gradient(to bottom, black 1px, transparent 1px);
+  background-size: calc(100% / 8) calc(100% / 8);
+  background-repeat: repeat;
 }
-.board-row {
-    display: flex;
-    flex: 1;
-}
+
+/* Place each intersection centered on a grid point */
 .intersection {
-    flex: 1;
-    border: 1px solid black;
-    box-sizing: border-box;
-    position: relative;
-    cursor: pointer;
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  z-index: 1;
 }
 
 .stone {
-  width: 80%;
-  height: 80%;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  pointer-events: none; /* So clicks go through to the intersection */
+  box-sizing: border-box;
 }
 
 .stone.black {
   background-color: black;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
 }
 
 .stone.white {
   background-color: white;
-  border: 1px solid #ccc;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+  border: 1px solid #444;
+  border-radius: 50%;
 }
 
+.turn-indicator {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+}
 
+.black {
+  color: black;
+}
+.white {
+  color: white;
+  background-color: black;
+  padding: 2px 6px;
+  border-radius: 5px;
+}
