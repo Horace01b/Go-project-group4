@@ -66,6 +66,41 @@
   padding: 2px 6px;
   border-radius: 5px;
 }
+
+
+.scoreboard {
+  background: #f5f5f5;
+  padding: 1rem;
+  border-radius: 12px;
+  margin-top: 1rem;
+}
+
+.gameover {
+  color: red;
+  font-weight: bold;
+}
+
+.winner {
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+}
+
+.score-history {
+  margin-top: 1rem;
+  background: #fff;
+  border-top: 1px solid #ddd;
+  padding-top: 0.5rem;
+}
+
+.score-history ul {
+  list-style: none;
+  padding: 0;
+}
+
+.score-history li {
+  padding: 0.3rem 0;
+}
+
 .go-board-switch {
   margin: 1rem;
 }

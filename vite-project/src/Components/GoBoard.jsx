@@ -1,8 +1,13 @@
 import { useState, useEffect } from "react";
 import "./css.css";
+
+import Intersection from "./Intersection"
+import ScoreBoard from './ScoreBoard';
+
+
 import Intersection from "./Intersection";
 import { getGojiMove } from "./ComputerLogic";
-import { applyMove } from "./captureLogic";
+import { applyMove } from "./captureLogic"
 
 function GoBoard() {
   const boardSize = 9;
@@ -16,6 +21,9 @@ function GoBoard() {
 
   const handlePlay = (row, col) => {
     if (board[row][col] !== null) return;
+    // Check if the game is over (for simplicity, we assume it never is in this example)
+    // You can implement your own game over logic here
+    // if (gameOver) return;
 
     let newBoard = applyMove(row, col, currentPlayer, board, boardSize);
     setBoard(newBoard);
@@ -67,6 +75,13 @@ function GoBoard() {
           {vsGoji && currentPlayer === "white" ? "Goji" : currentPlayer}
         </span>
       </p>
+      <div>
+        <ScoreBoard
+          scores={{ black: 0, white: 0 }}
+          currentPlayer={currentPlayer}
+          gameOver={false}
+        />
+      </div>
     </div>
   );
 }
