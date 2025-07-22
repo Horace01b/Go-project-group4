@@ -4,8 +4,6 @@ import "./css.css";
 import Intersection from "./Intersection"
 import ScoreBoard from './ScoreBoard';
 
-
-import Intersection from "./Intersection";
 import { getGojiMove } from "./ComputerLogic";
 import { applyMove } from "./captureLogic"
 
