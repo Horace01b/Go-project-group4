@@ -1,5 +1,5 @@
 // src/Components/Intersection.jsx
-//import React from "react";   --- not important since we are not using state
+//import React from "react";   
 import "./css.css"; 
 
 function Intersection({ rowIndex, colIndex, cell, boardSize, onPlay }) {
