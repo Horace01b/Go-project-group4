@@ -1,11 +1,10 @@
-import { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./css.css";
 
-import Intersection from "./Intersection"
-import ScoreBoard from './ScoreBoard';
-
+import Intersection from "./Intersection";
+import ScoreBoard from "./ScoreBoard";
 import { getGojiMove } from "./ComputerLogic";
-import { applyMove } from "./captureLogic"
+import { applyMove } from "./captureLogic";
 
 function GoBoard() {
   const boardSize = 9;
@@ -15,38 +14,70 @@ function GoBoard() {
     )
   );
   const [currentPlayer, setCurrentPlayer] = useState("black");
-  const [vsGoji, setVsGoji] = useState(false); // toggle mode
+  const [scores, setScores] = useState({ black: 0, white: 0 });
+  const [passCount, setPassCount] = useState(0);
+  const [gameOver, setGameOver] = useState(false);
+  const [vsGoji, setVsGoji] = useState(false);
 
   const handlePlay = (row, col) => {
-    if (board[row][col] !== null) return;
-    // Check if the game is over (for simplicity, we assume it never is in this example)
-    // You can implement your own game over logic here
-    // if (gameOver) return;
+    if (gameOver || board[row][col]) return;
 
-    let newBoard = applyMove(row, col, currentPlayer, board, boardSize);
+    const newBoard = applyMove(row, col, currentPlayer, board, boardSize);
     setBoard(newBoard);
 
-    const nextPlayer = currentPlayer === "black" ? "white" : "black";
-    setCurrentPlayer(nextPlayer);
+    
+    setScores(prev => ({
+      ...prev,
+      [currentPlayer]: prev[currentPlayer] + 1
+    }));
 
-    if (vsGoji && nextPlayer === "white") {
+    setCurrentPlayer(prev => (prev === "black" ? "white" : "black"));
+    setPassCount(0);
+
+    
+    if (vsGoji && currentPlayer === "black") {
       setTimeout(() => {
         const [botRow, botCol] = getGojiMove(newBoard, "white", boardSize) || [];
-
-        if (botRow !== undefined && newBoard[botRow][botCol] === null) {
-          const boardAfterBot = applyMove(botRow, botCol, "white", newBoard, boardSize);
-          setBoard(boardAfterBot);
+        if (botRow !== undefined) {
+          const botBoard = applyMove(botRow, botCol, "white", newBoard, boardSize);
+          setBoard(botBoard);
+          setScores(prev => ({
+            ...prev,
+            white: prev.white + 1
+          }));
           setCurrentPlayer("black");
         }
       }, 500);
     }
   };
 
+  const handlePass = () => {
+    if (gameOver) return;
+    const newPassCount = passCount + 1;
+    setPassCount(newPassCount);
+
+    if (newPassCount >= 2) {
+      setGameOver(true);
+    } else {
+      setCurrentPlayer(currentPlayer === "black" ? "white" : "black");
+    }
+  };
+
+  const resetGame = () => {
+    setBoard(Array.from({ length: boardSize }, () =>
+      Array.from({ length: boardSize }, () => null)
+    ));
+    setCurrentPlayer("black");
+    setScores({ black: 0, white: 0 });
+    setGameOver(false);
+    setPassCount(0);
+  };
+
   return (
-    <div className="go-board-container">
+    <div className="game-container">
       <div className="go-board-switch">
         <button
-          onClick={() => setVsGoji((prev) => !prev)}
+          onClick={() => setVsGoji(prev => !prev)}
           className={`toggle-mode-button ${vsGoji ? "goji-mode" : "two-player-mode"}`}>
           {vsGoji ? "Playing vs Goji" : "2 Player Mode"}
         </button>
@@ -67,21 +98,17 @@ function GoBoard() {
         )}
       </div>
 
-      <p className="turn-indicator">
-        Turn:{" "}
-        <span className={currentPlayer}>
-          {vsGoji && currentPlayer === "white" ? "Goji" : currentPlayer}
-        </span>
-      </p>
-      <div>
-        <ScoreBoard
-          scores={{ black: 0, white: 0 }}
-          currentPlayer={currentPlayer}
-          gameOver={false}
-        />
-      </div>
+      <ScoreBoard
+        scores={scores}
+        currentPlayer={currentPlayer}
+        gameOver={gameOver}
+        onRestart={resetGame}
+        onPass={handlePass}
+      />
     </div>
   );
 }
 
 export default GoBoard;
+
+
