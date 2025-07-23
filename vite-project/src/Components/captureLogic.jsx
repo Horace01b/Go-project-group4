@@ -1,4 +1,4 @@
-// src/utils/captureUtils.js
+// Logic to cappture stones
 export const getGroup = (row, col, board, boardSize, visited = new Set()) => {
   const color = board[row][col];
   const group = [];
@@ -64,6 +64,7 @@ export const applyMove = (row, col, player, boardState, boardSize) => {
   newBoard[row][col] = player;
 
   const opponent = player === "black" ? "white" : "black";
+  let capturedStones = 0;
 
   for (const [dx, dy] of [[0, 1], [1, 0], [0, -1], [-1, 0]]) {
     const newRow = row + dx;
@@ -79,9 +80,11 @@ export const applyMove = (row, col, player, boardState, boardSize) => {
       const group = getGroup(newRow, newCol, newBoard, boardSize);
       if (!hasLiberties(group, newBoard, boardSize)) {
         newBoard = removeGroup(group, newBoard);
+        capturedStones += group.length;
       }
     }
   }
 
-  return newBoard;
+  return { newBoard, capturedStones };
 };
+

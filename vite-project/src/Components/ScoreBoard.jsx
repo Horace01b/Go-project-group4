@@ -1,19 +1,26 @@
 import React from "react";
 import "./css.css";
 
-function ScoreBoard({ scores, currentPlayer, gameOver, onRestart, onPass }) {
+function ScoreBoard({ scores, captured, finalScores, currentPlayer, gameOver, onRestart, onPass }) {
   let winner = "";
   if (gameOver) {
-    if (scores.black > scores.white) winner = " Black wins!";
-    else if (scores.white > scores.black) winner = " White wins!";
-    else winner = " It's a tie!";
+    if (finalScores.black > finalScores.white) winner = "Black wins!";
+    else if (finalScores.white > finalScores.black) winner = "White wins!";
+    else winner = "It's a tie!";
   }
 
   return (
     <div className="scoreboard">
-      <h2> Score Board</h2>
-      <p><strong>Black:</strong> {scores.black} | <strong>White:</strong> {scores.white}</p>
-      {!gameOver && <p> Turn: {currentPlayer}</p>}
+      <h2>Score Board</h2>
+
+      <p>
+        <strong>Black</strong>: Stones Placed: {scores.black} | Captured: {captured.white} | Total: {finalScores.black}
+      </p>
+      <p>
+        <strong>White</strong>: Stones Placed: {scores.white} | Captured: {captured.black} | Total: {finalScores.white}
+      </p>
+
+      {!gameOver && <p>Turn: <strong>{currentPlayer}</strong></p>}
 
       {gameOver && (
         <>
@@ -22,15 +29,16 @@ function ScoreBoard({ scores, currentPlayer, gameOver, onRestart, onPass }) {
         </>
       )}
 
-      <button className="btn green" onClick={onRestart}> Restart</button>
+      <button className="btn green" onClick={onRestart}>Restart</button>
       <button
         className="btn green"
         onClick={() => {
           if (!gameOver && window.confirm("Pass your turn?")) {
             onPass();
           }
-        }}>
-         Pass
+        }}
+      >
+        Pass
       </button>
     </div>
   );
